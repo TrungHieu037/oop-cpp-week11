@@ -74,8 +74,8 @@ public:
 int main() {
     vector<Student> students = {
         Student(),
-        Student("Huong"),
-        Student("", "Vo Van Ngan", Date(2000,5,15))
+        Student("Chaoo"),
+        Student("", "Vo Van Ngan", Date(2007,20,12))
     };
 
     string key="123456789";
@@ -83,11 +83,11 @@ int main() {
     if(idx>=0){ cout<<"\nThong tin sinh vien tim thay:\n"; students[idx].print();}
     else{ cout<<"\nKhong tim thay sinh vien voi CCCD: "<<key<<'\n';}
 
-    auto ids_name = Student::getStudents(students,"Hu");
-    cout<<"\nSinh vien co ten chua 'Hu':\n";
+    auto ids_name = Student::getStudents(students,"Chaoo");
+    cout<<"\nSinh vien co ten chua 'Chaoo':\n";
     for(int i:ids_name) students[i].print();
 
     auto ids_age = Student::getStudentsByAge(students,26);
-    cout<<"\nSinh vien do tuoi 26:\n";
+    cout<<"\nSinh vien do tuoi 19:\n";
     for(int i:ids_age) students[i].print();
 }
