@@ -214,26 +214,26 @@ int main() {
     Date d(2011, 9, 15);
     Student student4("Bin", "Tra Vinh", d, "0399973179");
 
-    Date d2(1996, 10, 26);
+    Date d2(2003, 10, 26);
     Student student5("Cong Bach", "Da Nang", d2, "0937383809");
 
-    Date d3(2000, 5, 15);
+    Date d3(2007, 5, 23);
     Student student6("Nguyen Van A",
                      "Thu Duc, Ho Chi Minh",
                      d3,
-                     "123456789");
+                     "0339027719");
 
-    Date d4(2001, 8, 20);
+    Date d4(2005, 8, 20);
     Student student7("Tran Van B",
                      "Thieu Hoa, Thanh Hoa",
                      d4,
-                     "987654321");
+                     "0968262000");
 
-    Date d5(2000, 11, 10);
+    Date d5(2006, 11, 10);
     Student student8("Le Van C",
                      "Di An, Binh Duong",
                      d5,
-                     "111222333");
+                     "6879687979");
 
     // ===== Put Students into Vector =====
 
