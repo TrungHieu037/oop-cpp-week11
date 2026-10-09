@@ -1,282 +1,327 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <map>
-#include <iomanip>
 
 using namespace std;
 
-// =================================================================
-// 1. CẤU TRÚC DATE (Quản lý Ngày/Tháng/Năm/Giờ/Phút/Giây)
-// =================================================================
-struct Date {
-    int day;
-    int month;
-    int year;
-    int hour;
-    int minute;
-    int second;
+#define MAX 100
 
-    // Constructor mặc định & tham số
-    Date(int y = 2000, int m = 1, int d = 1, int h = 0, int min = 0, int s = 0)
-        : year(y), month(m), day(d), hour(h), minute(min), second(s) {}
+// ===== Class Date =====
+class Date {
+public:
+    int year, month, day;
 
-    // Định dạng ngày giờ dạng chuỗi: yyyy/mm/dd hh:mm:ss
-    string toString() const {
-        char buffer[30];
-        snprintf(buffer, sizeof(buffer), "%04d/%02d/%02d %02d:%02d:%02d", 
-                 year, month, day, hour, minute, second);
-        return string(buffer);
+    Date() {
+        year = 0;
+        month = 0;
+        day = 0;
     }
 
-    // Định dạng ngắn gọn chỉ có ngày: dd/mm/yyyy
-    string toShortDateString() const {
-        char buffer[15];
-        snprintf(buffer, sizeof(buffer), "%02d/%02d/%04d", day, month, year);
-        return string(buffer);
+    Date(int y, int m, int d) {
+        year = y;
+        month = m;
+        day = d;
     }
 };
 
-// =================================================================
-// 2. CLASS STUDENT (Đóng gói Thuộc tính & Phương thức)
-// =================================================================
+// ===== Class Student =====
 class Student {
 private:
-    // Properties (Tính chất đóng gói - Data Hiding)
     string name;
     string address;
     Date birthdate;
     string cccd;
 
 public:
-    // --- CONSTRUCTORS (Hàm khởi tạo) ---
-    // 1. Constructor mặc định
-    Student() : name(""), address(""), birthdate(Date()), cccd("") {}
+    // ===== Constructors =====
 
-    // 2. Constructor khởi tạo Tên
-    Student(string n) : name(n), address(""), birthdate(Date()), cccd("") {}
+    Student() {
+        name = "";
+        address = "";
+        birthdate = Date();
+        cccd = "";
+    }
 
-    // 3. Constructor khởi tạo Ngày sinh
-    Student(Date d) : name(""), address(""), birthdate(d), cccd("") {}
+    Student(string n) {
+        name = n;
+        address = "";
+        birthdate = Date();
+        cccd = "";
+    }
 
-    // 4. Constructor khởi tạo Tên và Địa chỉ
-    Student(string name, string address) 
-        : name(name), address(address), birthdate(Date()), cccd("") {}
+    Student(string n, string addr) {
+        name = n;
+        address = addr;
+        birthdate = Date();
+        cccd = "";
+    }
 
-    // 5. Constructor khởi tạo Tên, Địa chỉ và Ngày sinh
-    Student(string name, string address, Date birthdate) 
-        : name(name), address(address), birthdate(birthdate), cccd("") {}
+    Student(string n, string addr, Date d) {
+        name = n;
+        address = addr;
+        birthdate = d;
+        cccd = "";
+    }
 
-    // 6. Constructor đầy đủ tất cả thuộc tính
-    Student(string name, string address, Date birthdate, string cccd) 
-        : name(name), address(address), birthdate(birthdate), cccd(cccd) {}
+    Student(string n, string addr, Date d, string id) {
+        name = n;
+        address = addr;
+        birthdate = d;
+        cccd = id;
+    }
 
-    // --- GETTERS & SETTERS (Các hàm truy xuất thuộc tính) ---
+    // ===== Setters & Getters =====
+
+    void setStudentInfo(string n) {
+        name = n;
+    }
+
+    void setStudentInfo(string n, string addr) {
+        name = n;
+        address = addr;
+    }
+
+    void setStudentInfo(string n, string addr, Date d) {
+        name = n;
+        address = addr;
+        birthdate = d;
+    }
+
+    void setStudentInfo(string n, string addr, Date d, string id) {
+        name = n;
+        address = addr;
+        birthdate = d;
+        cccd = id;
+    }
+
     string getName() const { return name; }
     string getAddress() const { return address; }
     Date getBirthdate() const { return birthdate; }
     string getCccd() const { return cccd; }
 
-    void setName(string n) { name = n; }
-    void setAddress(string addr) { address = addr; }
-    void setBirthdate(Date d) { birthdate = d; }
-    void setCccd(string c) { cccd = c; }
+    // ===== Display Student Info =====
 
-    // --- PHƯƠNG THỨC NHẬP / XUẤT THÔNG TIN ---
-    // Nhập dữ liệu sinh viên từ bàn phím
-    void setStudentInfo() {
-        cout << "Nhap ho ten sinh vien: ";
-        getline(cin >> ws, name);
-        cout << "Nhap dia chi (VD: Vo Van Ngan, TpHCM): ";
-        getline(cin, address);
-        cout << "Nhap So CCCD: ";
-        getline(cin, cccd);
-        cout << "Nhap Ngay, Thang, Nam sinh (cach nhau bang dau cach): ";
-        cin >> birthdate.day >> birthdate.month >> birthdate.year;
+    void getStudentInfo() const {
+        cout << "====================" << endl;
+        cout << "=== Student Info ===" << endl;
+        cout << "====================" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Address: " << address << endl;
+        cout << "Birthdate: "
+             << birthdate.year << "/"
+             << birthdate.month << "/"
+             << birthdate.day << endl;
+        cout << "CCCD: " << cccd << endl;
     }
 
-    // Hiển thị thông tin sinh viên dưới dạng bảng
-    void printStudentInfo() const {
-        cout << left 
-             << setw(22) << (name.empty() ? "(Chua co)" : name)
-             << setw(30) << (address.empty() ? "(Chua co)" : address)
-             << setw(15) << birthdate.toShortDateString()
-             << setw(15) << (cccd.empty() ? "(Chua co)" : cccd) 
-             << endl;
+    // ===== Search by CCCD =====
+
+    static Student findStudentByCCCD(Student students[], int n, string id) {
+        for (int i = 0; i < n; i++) {
+            if (students[i].cccd == id) {
+                return students[i];
+            }
+        }
+        return Student();
+    }
+
+    // ===== Search by Name (Trả về mảng qua tham chiếu) =====
+
+    static void findStudentsByName(Student students[], int n, string key, Student result[], int &m) {
+        m = 0;
+        for (int i = 0; i < n; i++) {
+            if (students[i].name.find(key) != string::npos) {
+                result[m] = students[i];
+                m++;
+            }
+        }
+    }
+
+    // ===== Search by Age =====
+
+    static void findStudentsByAge(Student students[], int n, int age, Student result[], int &m) {
+        m = 0;
+        int currentYear = 2026;
+
+        for (int i = 0; i < n; i++) {
+            if (students[i].birthdate.year != 0) {
+                int studentAge = currentYear - students[i].birthdate.year;
+                if (studentAge == age) {
+                    result[m] = students[i];
+                    m++;
+                }
+            }
+        }
+    }
+
+    // ===== Search by Birth Year =====
+
+    static void getStudentsByYear(Student students[], int n, int year, Student result[], int &m) {
+        m = 0;
+        for (int i = 0; i < n; i++) {
+            if (students[i].birthdate.year == year) {
+                result[m] = students[i];
+                m++;
+            }
+        }
+    }
+
+    // ===== Search by Province =====
+
+    static void getStudentsByProvince(Student students[], int n, string province, Student result[], int &m) {
+        m = 0;
+        for (int i = 0; i < n; i++) {
+            if (students[i].address.find(province) != string::npos) {
+                result[m] = students[i];
+                m++;
+            }
+        }
+    }
+
+    // ===== Statistics by Birth Year =====
+
+    static void statisticByYear(Student students[], int n, int years[], int soNam, int counts[]) {
+        for (int i = 0; i < soNam; i++) {
+            int count = 0;
+            for (int j = 0; j < n; j++) {
+                if (students[j].birthdate.year == years[i]) {
+                    count++;
+                }
+            }
+            counts[i] = count;
+        }
+    }
+
+    // ===== Statistics by Province =====
+
+    static void statisticByProvince(Student students[], int n, string provinces[], int soTinh, int counts[]) {
+        for (int i = 0; i < soTinh; i++) {
+            int count = 0;
+            for (int j = 0; j < n; j++) {
+                if (students[j].address.find(provinces[i]) != string::npos) {
+                    count++;
+                }
+            }
+            counts[i] = count;
+        }
+    }
+
+    // ===== Print List =====
+
+    static void printList(Student students[], int n) {
+        for (int i = 0; i < n; i++) {
+            students[i].getStudentInfo();
+            cout << endl;
+        }
     }
 };
 
-// =================================================================
-// 3. CÁC HÀM XỬ LÝ DANH SÁCH (TẤT CẢ TRẢ VỀ VECTOR<STUDENT>)
-// =================================================================
-
-// 1. Lấy thông tin sinh viên theo mã CCCD
-// Trả về vector chứa 1 sinh viên tìm thấy (hoặc vector rỗng nếu không thấy)
-vector<Student> getStudentInfoByCCCD(string cccd, const vector<Student>& list) {
-    vector<Student> result;
-    for (size_t i = 0; i < list.size(); i++) {
-        if (list[i].getCccd() == cccd) {
-            result.push_back(list[i]);
-            break; // CCCD là duy nhất nên thoát vòng lặp ngay khi tìm thấy
-        }
-    }
-    return result;
-}
-
-// 2. Tìm kiếm sinh viên theo Tên (Tìm kiếm gần đúng)
-vector<Student> getStudentsByName(string name, const vector<Student>& list) {
-    vector<Student> result;
-    for (const auto& student : list) {
-        // So sánh chuỗi không phân biệt hoa thường hoặc chứa từ khóa
-        if (student.getName().find(name) != string::npos) {
-            result.push_back(student);
-        }
-    }
-    return result;
-}
-
-// 3. Tìm kiếm sinh viên theo Tuổi
-vector<Student> getStudentsByAge(int age, const vector<Student>& list) {
-    vector<Student> result;
-    int currentYear = 2026; // Giả định năm hiện tại
-    for (const auto& student : list) {
-        int studentAge = currentYear - student.getBirthdate().year;
-        if (studentAge == age) {
-            result.push_back(student);
-        }
-    }
-    return result;
-}
-
-// 4. Thống kê / Lấy danh sách sinh viên theo Năm sinh (2000, 2001, 2005, 2006, v.v.)
-vector<Student> getStudentsByYear(int year, const vector<Student>& list) {
-    vector<Student> result;
-    for (const auto& student : list) {
-        if (student.getBirthdate().year == year) {
-            result.push_back(student);
-        }
-    }
-    return result;
-}
-
-// 5. Thống kê / Lấy danh sách sinh viên theo Tỉnh hoặc Tên đường/Địa chỉ
-vector<Student> getStudentsByAddress(string address, const vector<Student>& list) {
-    vector<Student> result;
-    for (const auto& student : list) {
-        if (student.getAddress().find(address) != string::npos) {
-            result.push_back(student);
-        }
-    }
-    return result;
-}
-
-// =================================================================
-// 4. HÀM HIỂN THỊ (HÀM BỔ TRỢ ĐỂ IN KẾT QUẢ OUT CONSOLE)
-// =================================================================
-void display(const vector<Student>& list) {
-    if (list.empty()) {
-        cout << "   --> [Khong tim thay sinh vien nao phu hop!]" << endl;
-        return;
-    }
-    cout << "----------------------------------------------------------------------------" << endl;
-    cout << left 
-         << setw(22) << "Ho va Ten" 
-         << setw(30) << "Dia Chi" 
-         << setw(15) << "Ngay Sinh" 
-         << setw(15) << "So CCCD" << endl;
-    cout << "----------------------------------------------------------------------------" << endl;
-    
-    // Duyệt mảng bằng chỉ số index
-    for (size_t i = 0; i < list.size(); i++) {
-        list[i].printStudentInfo();
-    }
-    cout << "----------------------------------------------------------------------------" << endl;
-    cout << "Tong so lượng: " << list.size() << " sinh vien." << endl;
-}
-
-// =================================================================
-// 5. MAIN PROGRAM (CÁC VÍ DỤ GỌI HÀM CHI TIẾT)
-// =================================================================
+// ===== Main Function =====
 int main() {
-    cout << "==========================================================================" << endl;
-    cout << "            CHUONG TRINH QUAN LY DANH SACH SINH VIEN (OOP C++)            " << endl;
-    cout << "==========================================================================" << endl << endl;
 
-    // --- DEMO 1: MINH HỌA CÁC CONSTRUCTOR KHÁC NHAU ---
-    cout << ">>> 1. DEMO KHOI TAO PHUONG THUC CONSTRUCTOR:" << endl;
-    Student s1; // Constructor 1: Mặc định
-    Student s2("Nguyen Van Huong"); // Constructor 2: Chỉ truyền Tên
-    Student s3("Tran Thi Mai", "Vo Van Ngan, TpHCM"); // Constructor 4: Tên + Địa chỉ
-    Student s4("Le Hoang Nam", "Dong Nai", Date(2005, 3, 15), "075205123456"); // Constructor 6: Đầy đủ
+    // ===== Create Students =====
 
-    vector<Student> demoList = {s1, s2, s3, s4};
-    display(demoList);
+    Student student1;
+    Student student2("Huong");
+    Student student3("An", "Vo Van Ngan");
+
+    Date d(1989, 9, 12);
+    Student student4("DoMIXI", "Ha Noi", d, "0007777056");
+
+    Date d2(1996, 10, 26);
+    Student student5("DungSenpai", "Da Nang", d2, "999993884");
+
+    Date d3(2000, 5, 15);
+    Student student6("Nguyen Van A", "Thu Duc, Ho Chi Minh", d3, "123456789");
+
+    Date d4(2001, 8, 20);
+    Student student7("Tran Van B", "Bien Hoa, Dong Nai", d4, "987654321");
+
+    Date d5(2000, 11, 10);
+    Student student8("Le Van C", "Thu Dau Mot, Binh Duong", d5, "111222333");
+
+    // ===== Put Students into Array =====
+
+    Student students[MAX];
+    int n = 0;
+
+    students[n++] = student1;
+    students[n++] = student2;
+    students[n++] = student3;
+    students[n++] = student4;
+    students[n++] = student5;
+    students[n++] = student6;
+    students[n++] = student7;
+    students[n++] = student8;
+
+    // ===== Display All Students =====
+
+    cout << "========== ALL STUDENTS ==========" << endl;
+    Student::printList(students, n);
+
+    // ===== Search by CCCD =====
+
     cout << endl;
+    cout << "========== SEARCH BY CCCD ==========" << endl;
 
-    // --- DEMO 2: KHỞI TẠO DANH SÁCH MẢNG 10 SINH VIÊN ---
-    cout << ">>> 2. KHOI TAO DANH SACH DULIEU MAU (10 SINH VIEN):" << endl;
-    vector<Student> students;
-    
-    students.push_back(Student("Nguyen Van A", "TpHCM", Date(2005, 5, 12), "079205000001"));
-    students.push_back(Student("Tran Thi B", "Vo Van Ngan, TpHCM", Date(2000, 10, 20), "079200000002"));
-    students.push_back(Student("Le Van C", "Binh Duong", Date(2005, 3, 15), "074205000003"));
-    students.push_back(Student("Pham Minh D", "Dong Nai", Date(2001, 8, 22), "075201000004"));
-    students.push_back(Student("Hoang Thi E", "TpHCM", Date(2000, 12, 1), "079200000005"));
-    students.push_back(Student("Vong Huong", "Vo Van Ngan, TpHCM", Date(2006, 1, 1), "079206000006"));
-    students.push_back(Student("Dang Van G", "Ha Noi", Date(2001, 4, 18), "001201000007"));
-    students.push_back(Student("Bui Thi H", "Binh Duong", Date(2005, 9, 9), "074205000008"));
-    students.push_back(Student("Ngo Van I", "Dong Nai", Date(2006, 11, 30), "075206000009"));
-    students.push_back(Student("Do Thi K", "TpHCM", Date(2000, 7, 7), "079200000010"));
+    Student result = Student::findStudentByCCCD(students, n, "123456789");
+    result.getStudentInfo();
 
-    display(students);
+    // ===== Search by Name =====
+
     cout << endl;
+    cout << "========== SEARCH BY NAME ==========" << endl;
 
-    // --- DEMO 3: TÌM KIẾM THEO CCCD ---
-    cout << ">>> 3. VI DU GOI HAM: Tim sinh vien co CCCD = '079200000002'" << endl;
-    vector<Student> resultCCCD = getStudentInfoByCCCD("079200000002", students);
-    display(resultCCCD);
+    Student nameResult[MAX];
+    int soKetQua = 0;
+
+    Student::findStudentsByName(students, n, "Van", nameResult, soKetQua);
+    Student::printList(nameResult, soKetQua);
+
+    // ===== Statistics by Birth Year =====
+
     cout << endl;
+    cout << "===== Statistics by Birth Year =====" << endl
+    int years[MAX];
+    int soNam = 0;
+    years[soNam++] = 2000;
+    years[soNam++] = 2001;
 
-    // --- DEMO 4: THỐNG KÊ THEO NĂM SINH (2000, 2001, 2005, 2006) ---
-    cout << ">>> 4. VI DU GOI HAM: Thong ke sinh vien sinh nam 2005:" << endl;
-    vector<Student> list2005 = getStudentsByYear(2005, students);
-    display(list2005);
+    int yearCounts[MAX];
+    Student::statisticByYear(students, n, years, soNam, yearCounts);
+
+    for (int i = 0; i < soNam; i++) {
+        cout << "Year " << years[i] << ": " << yearCounts[i] << " student(s)" << endl;
+
+        Student yearList[MAX];
+        int soNguoiTheoNam = 0;
+        Student::getStudentsByYear(students, n, years[i], yearList, soNguoiTheoNam);
+        Student::printList(yearList, soNguoiTheoNam);
+    }
+
+    // ===== Statistics by Province =====
+
     cout << endl;
+    cout << "===== Statistics by Province =====" << endl;
 
-    cout << ">>> 5. VI DU GOI HAM: Thong ke sinh vien sinh nam 2000:" << endl;
-    vector<Student> list2000 = getStudentsByYear(2000, students);
-    display(list2000);
-    cout << endl;
+    string provinces[MAX];
+    int soTinh = 0;
+    provinces[soTinh++] = "Ho Chi Minh";
+    provinces[soTinh++] = "Dong Nai";
+    provinces[soTinh++] = "Binh Duong";
+    provinces[soTinh++] = "Ha Noi";
+    provinces[soTinh++] = "Da Nang";
 
-    // --- DEMO 5: TÌM KIẾM VÀ THỐNG KÊ THEO ĐỊA CHỈ / TỈNH THÀNH ---
-    cout << ">>> 6. VI DU GOI HAM: Tim sinh vien o 'Vo Van Ngan':" << endl;
-    vector<Student> listVoVanNgan = getStudentsByAddress("Vo Van Ngan", students);
-    display(listVoVanNgan);
-    cout << endl;
+    int provinceCounts[MAX];
+    Student::statisticByProvince(students, n, provinces, soTinh, provinceCounts);
 
-    cout << ">>> 7. VI DU GOI HAM: Thong ke sinh vien thuoc tinh 'Binh Duong':" << endl;
-    vector<Student> listBinhDuong = getStudentsByAddress("Binh Duong", students);
-    display(listBinhDuong);
-    cout << endl;
+    for (int i = 0; i < soTinh; i++) {
+        cout << provinces[i] << ": " << provinceCounts[i] << " student(s)" << endl;
 
-    // --- DEMO 6: LỌC THEO TUỔI ---
-    cout << ">>> 8. VI DU GOI HAM: Tim sinh vien 21 tuoi (Nam sinh 2005 - Tinh den 2026):" << endl;
-    vector<Student> list21Age = getStudentsByAge(21, students);
-    display(list21Age);
-    cout << endl;
-
-    // --- DEMO 7: THIẾT LẬP VÀ NHẬP SINH VIÊN MỚI TỪ BÀN PHÍM ---
-    cout << ">>> 9. DEMO THEM SINH VIEN MOI BANG VOID SETSTUDENTINFO():" << endl;
-    char answer;
-    cout << "Ban co muon nhap them 1 sinh vien moi tu ban phim? (y/n): ";
-    cin >> answer;
-    if (answer == 'y' || answer == 'Y') {
-        Student newStudent;
-        newStudent.setStudentInfo(); // Gọi phương thức nhập dữ liệu
-        students.push_back(newStudent); // Thêm vào mảng chính
-        
-        cout << "\n--> Danh sach sau khi them moi:" << endl;
-        display(students);
+        Student provinceList[MAX];
+        int soNguoiTheoTinh = 0;
+        Student::getStudentsByProvince(students, n, provinces[i], provinceList, soNguoiTheoTinh);
+        Student::printList(provinceList, soNguoiTheoTinh);
     }
 
     return 0;
